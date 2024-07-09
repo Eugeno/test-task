@@ -65,8 +65,6 @@ export class App implements OnInit {
   getUsers() {
     this.userService.getUsers().subscribe((users) => {
       this.items = users.reduce((acc: Item[], item) => {
-        console.log(acc);
-        acc.push()
         return [
           ...acc,
           {
