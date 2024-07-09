@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import 'zone.js';
@@ -7,10 +7,10 @@ import { Item, UserService } from './user.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, NgIf],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <button type="button" (click)="add()">add</button>
+    <button *ngIf="items.length" type="button" (click)="add()">add</button>
     <table>
       <tr *ngFor="let item of items">
         <td>{{item.name}}</td>

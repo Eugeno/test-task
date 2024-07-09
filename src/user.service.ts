@@ -34,5 +34,5 @@ export class UserService {
 
   private getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (min - max + 1)) + min;
-  };
+  }
 }
