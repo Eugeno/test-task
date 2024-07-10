@@ -29,7 +29,8 @@ export class UserService {
   }
 
   search(name: string): Observable<Item | null> {
-    return timer(this.getRandomInt(111, 999)).pipe(map(() => USERS.find((user) => user.name.includes(name)) || null));
+    return timer(this.getRandomInt(111, 999))
+      .pipe(map(() => USERS.find((user) => user.name.toLowerCase().includes(name.toLowerCase())) || null));
   }
 
   getData(): Observable<unknown> {
