@@ -1,6 +1,7 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { Subject, switchMap, tap } from 'rxjs';
 import 'zone.js';
 import { Item, UserService } from './user.service';
 
@@ -26,23 +27,42 @@ import { Item, UserService } from './user.service';
     <hr>
 
     <p>
-      <input #input type="text" (input)="search(input.value)">
+      <input #input type="text" placeholder="name" (input)="search(input.value)">
       @if (result) {
         {{result.name}} — {{result.amount}}
       }
     </p>
+
+    <hr>
+
+    <button type="button" (click)="load()">Load</button>
+    <span *ngIf="loading">loading...</span>
   `,
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   userService = inject(UserService);
 
   items: Item[] = [];
   total!: number;
   result?: Item;
 
+  loading = false;
+
+  private subj = new Subject<void>();
+
   ngOnInit() {
     this.getUsers();
     this.total = this.items.reduce((acc, item) => acc + item.amount, 0);
+  }
+
+  ngAfterViewInit() {
+    this.subj
+      .pipe(tap(() => this.loading = true))
+      .pipe(switchMap(() => this.userService.getData()))
+      .subscribe({
+        next: () => { this.loading = false },
+        error: () => { this.loading = false },
+      })
   }
 
   add() {
@@ -74,6 +94,10 @@ export class App implements OnInit {
         ];
       }, []);
     });
+  }
+
+  load() {
+    this.subj.next();
   }
 }
 
