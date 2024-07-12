@@ -3,7 +3,8 @@ import { AfterViewInit, ChangeDetectionStrategy, Component, inject, OnInit } fro
 import { bootstrapApplication } from '@angular/platform-browser';
 import { Subject, switchMap, tap } from 'rxjs';
 import 'zone.js';
-import { Item, UserService } from './user.service';
+import { UserService } from './user.service';
+import { Item } from './user.type';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,13 @@ import { Item, UserService } from './user.service';
     <hr>
 
     <p>
+      <span>Diag codes: {{diagCodes}}</span><br>
+      <span>Uniq codes: {{uniqCodes}}</span>
+    </p>
+
+    <hr>
+
+    <p>
       <input #input type="text" placeholder="name" (input)="search(input.value)">
       @if (result) {
         {{result.name}} — {{result.amount}}
@@ -45,6 +53,9 @@ export class App implements OnInit, AfterViewInit {
   items: Item[] = [];
   total!: number;
   result?: Item;
+
+  diagCodes = ['AB', 'AB', 'AB', 'ABCD', 'ABCD']; // 100+
+  uniqCodes = []; // A, B, C, D
 
   loading = false;
 

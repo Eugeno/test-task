@@ -1,26 +1,7 @@
 import { Injectable } from '@angular/core';
 import { map, Observable, switchMap, throwError, timer } from 'rxjs';
-
-export interface Item {
-  name: string;
-  amount: number;
-  emoji?: string;
-}
-
-const USERS: Item[] = [
-  {
-    name: 'John',
-    amount: 31,
-  },
-  {
-    name: 'Dave',
-    amount: 14,
-  },
-  {
-    name: 'Alex',
-    amount: 27,
-  },
-]
+import { Item } from './user.type';
+import { USERS } from './user.data';
 
 @Injectable()
 export class UserService {
